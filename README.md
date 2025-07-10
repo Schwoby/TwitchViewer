@@ -1,5 +1,5 @@
 # TwitchViewer
-**TwitchViewer** is a Python script designed to run on a Raspberry Pi 5 with Ubuntu 24 LTS as the Operating System. It provides seamless viewing and automatic switching between a predefined list of Twitch streamers, offering a fully hands-off, stand-alone solution for effortless streamer rotation.
+**TwitchViewer** is a Python script designed to run on a Raspberry Pi 5 with Ubuntu 24 LTS as the Operating System and Firefox as the browser. It provides seamless viewing and automatic switching between a predefined list of Twitch streamers, offering a fully hands-off, stand-alone solution for effortless streamer rotation.
 
 ---
 
