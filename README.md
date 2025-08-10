@@ -89,7 +89,7 @@ Log of all live streamers found during checks.
 
 ---
 
-## `ViewingStreamers.csv`
+## `ViewedStreamers.csv`
 **This file is actively used by the script.**
 Tracks which streamers have been selected for viewing and how many times each has been shown.  
 
