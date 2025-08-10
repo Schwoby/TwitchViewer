@@ -49,15 +49,15 @@ Contains the Twitch authorization details.
 
 ## `TwitchStreamers.csv`
 **This file must be filled out before running the script.**  
-It defines which streamers will be considered for viewing, their priority level, and any optional category filters that control when each streamer is eligible.
+It defines which streamers will be considered for viewing, their priority level, and any optional category filters that control when each streamer is eligible, seporated by commas.
 
 **Format:**
-| Priority | Streamer | Category (optional) |
-| -------- | -------- | ------------------- |
-| 1 | StreamerA | Music, DJs, Art |
-| 2 | StreamerB | -IRL, -Just Chatting |
-| 2 | StreamerC | |
-| 4 | StreamerD | |
+| Priority | Streamer | Category (optional) | |
+| -------- | -------- | ------------------- | --- |
+| 1 | StreamerA | Music | Single category, no quotes needed |
+| 2 | StreamerB | "Music,DJs" | Multiple categories, quotes required |
+| 2 | StreamerC | | Empty category, no quotes needed |
+| 4 | StreamerD | "-IRL,-Just Chatting,-DJs" | Multiple categories, quotes required |
 
 **Details:**
 - `Priority` is an integer for controlling order.
