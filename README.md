@@ -3,33 +3,60 @@
 
 ---
 
-## `TwitchViewer.py`
-This is the main script. Use caution when editing it.
-### 1. Mouse Position Check
-- If the mouse is inside the skip zone:  
-  1. The script pauses before rechecking.  
-  2. If the mouse remains in the skip zone, the script exits.  
-- If the mouse is outside the skip zone, the script continues.
-### 2. Check for Active Twitch Streamers
-- Load `TwitchStreamers.csv` and detect which streamers are live.
-- Determine which streamers qualify for viewing.
-- Save results to `LiveStreamers.csv`.
-### 3. Compare Streamer Results
-- Compare active streamers against `ViewingStreamers.csv`.
-  - Remove any streamers no longer active.
-  - Add any newly active streamers not already listed.
-### 4. Browser Check
-- If a browser is open, check if it’s displaying a Twitch streamer and mark that streamer as the **Current Streamer**.
-### 5. Compare Browser Result to `ViewingStreamers.csv`
-- If the browser is open **and** the **Current Streamer** has not reached their view limit, keep them as the **Selected Streamer**.
-- If the **Current Streamer** has reached their view limit, select the next eligible streamer instead.
-- If no browser is open, or the browser is not on a Twitch page, clear the **Current Streamer** and pick the next eligible streamer.
-- If no eligible streamers are found, set the **Selected Streamer** to `null`.
-### 6. Activate Streamer / Browser
-- Increment the `Count` field in `ViewingStreamers.csv` for the **Selected Streamer**.
-- If the **Current Streamer** differs from the **Selected Streamer**, navigate to the **Selected Streamer**.
-- If there is no **Current Streamer**, open a new tab to the **Selected Streamer**.
-- If the **Current Streamer** is set but the **Selected Streamer** is `null`, close the tab.
+## `Twitch Streamer Rotation Manager`
+
+This project is a Python-based automation tool that integrates with the **Twitch API** and manages stream viewing sessions in **Firefox**.  
+It retrieves a list of Twitch streamers from CSV files, checks who is live, and automatically opens, closes, or switches Firefox tabs to keep a rotation of streamers active.  
+
+### `Features`
+- **Twitch API Integration**  
+  - Requests access tokens  
+  - Validates streamers from a CSV list  
+  - Fetches live stream data with retries and backoff  
+
+- **Streamer Rotation System**  
+  - Reads and updates `ROTATE_STREAMER_FILE` and `STREAMER_ROTATE_FILE`  
+  - Tracks how many times each streamer has been viewed  
+  - Ensures fair rotation while prioritizing streamers based on assigned priority values  
+
+- **Firefox Window Control** (via `xdotool`)  
+  - Open new Twitch stream windows  
+  - Switch the active tab to a new streamer  
+  - Close Twitch tabs when no streams are available  
+  - Minimize all windows when idle  
+
+- **Safe Zone Mouse Detection**  
+  - Monitors mouse position  
+  - Temporarily pauses Twitch processing when the cursor is near a "safe zone" edge of the screen  
+
+- **CSV File Handling**  
+  - Reads configured streamer lists (`STREAMER_ROTATE_FILE`)  
+  - Writes active streamers to `ACTIVE_STREAMER_FILE`  
+  - Saves rotation state to `ROTATE_STREAMER_FILE`  
+  - Logs missing or invalid streamer accounts to `MISSING_STREAMER_FILE`  
+
+### `Main Workflow`
+1. **Safe Zone Check** – Pauses Twitch processing if mouse is inside the "safe zone".  
+2. **Firefox State Detection** – Finds open Firefox windows and determines if a Twitch stream is already active.  
+3. **Twitch API Queries** – Fetches and validates live stream data for all configured streamers.  
+4. **Decision Engine** – Determines whether to open, close, switch, or do nothing with Firefox based on live stream availability and current rotation.  
+5. **Rotation Tracking** – Updates counts and priorities for streamers, ensuring fairness and preventing overexposure.  
+
+### `Key Files`
+- **`STREAMER_ROTATE_FILE`** → Source list of streamers and their priorities  
+- **`ACTIVE_STREAMER_FILE`** → Stores currently live streamers and their categories/games  
+- **`ROTATE_STREAMER_FILE`** → Maintains rotation state and view counts  
+- **`MISSING_STREAMER_FILE`** → Logs streamers not found on Twitch  
+
+### `Requirements`
+- Python 3.x  
+- `requests` library  
+- `xdotool` (Linux) for window and mouse control  
+- Firefox browser  
+
+### `Usage`
+- Run the script directly
+- Run the script via 'crontab -e'
 
 ---
 
